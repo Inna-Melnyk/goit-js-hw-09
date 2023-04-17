@@ -25,11 +25,15 @@ const options = {
     }
 
     startBtn.removeAttribute('disabled');
+
     startBtn.addEventListener('click', onClick);
 
     function onClick() {
       startBtn.setAttribute('disabled', 'disabled');
-      setInterval(() => {
+      pickTimeEl.setAttribute('disabled', 'disabled');
+
+      const timerId = setInterval(() => {
+
         const timeLeft = convertMs(selectedDates[0] - Date.now());
         console.log(timeLeft);
 
@@ -37,9 +41,14 @@ const options = {
         hoursEl.textContent = addLeadingZero(timeLeft.hours);
         minutesEl.textContent = addLeadingZero(timeLeft.minutes);
         secondsEl.textContent = addLeadingZero(timeLeft.seconds);
+
+        if (selectedDates[0] - Date.now() < 1000) {
+          pickTimeEl.removeAttribute('disabled', 'disabled');
+          clearInterval(timerId);
+        }
       }, 1000);
     }
   },
 };
 
-const flatPickerTime = flatpickr(pickTimeEl, options);
+flatpickr(pickTimeEl, options);
