@@ -29,9 +29,15 @@ function onSubmit(evt) {
   const stepValue = Number(step.value);
   const amountValue = Number(amount.value);
 
+  if (amountValue < 0 || stepValue < 0 || delayValue < 0) {
+    Notify.failure("Please enter number more then 0");
+    return;
+  }
+
   for (let i = 1; i <= amountValue; i += 1) {
     createPromise(i, delayValue)
       .then(res => {
+        console.log(res);
         Notify.success(res);
       })
       .catch(err => {
